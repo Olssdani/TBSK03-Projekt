@@ -19,6 +19,7 @@ public class TargetDetector : MonoBehaviour {
 
         for(int i = 0; i< TargetsWithinCollider.Length; ++i)
         {
+          
             Transform target = TargetsWithinCollider[i].transform;
             Vector3 directionToTarget = (target.position - transform.position).normalized;
             if(Vector3.Angle(transform.forward, directionToTarget)<viewAngle/2)
@@ -26,6 +27,7 @@ public class TargetDetector : MonoBehaviour {
                 float dist = Vector3.Distance(transform.position, target.position);
                 if(!Physics.Raycast(transform.position,directionToTarget,dist, ObstacleMask))
                 {
+                   
                     VisableTargets.Add(target);
                     return true;
                 }
@@ -33,13 +35,6 @@ public class TargetDetector : MonoBehaviour {
         }
         return false;
     }
-
-
-
-
-
-
-
 
     public Vector3 DirFromAngle(float angleInDegrees, bool angleIsGlobal)
     {

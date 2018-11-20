@@ -8,6 +8,7 @@ public class GridScript : MonoBehaviour
     public LayerMask unwalkableMask;
     public Vector2 gridWorldSize;
     public float nodeRadius;
+    public List<Node> path;
     Node[,] grid;
  
 
@@ -73,7 +74,7 @@ public class GridScript : MonoBehaviour
         return grid[x, y];
     }
 
-    public List<Node> path;
+
     void OnDrawGizmos()
     {
         Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));

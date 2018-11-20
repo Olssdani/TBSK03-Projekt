@@ -5,17 +5,36 @@ using UnityEngine;
 public class Pathfinding : MonoBehaviour {
 
     GridScript grid;
-    public Transform seeker, target;
+    private Vector3 target;
+    public Transform seeker;
 
     void Awake()
     {
         grid = GetComponent<GridScript>();
+        target = seeker.position;
+        
     }
     void Update()
     {
-        FindPath(seeker.position, target.position);
+        FindPath(seeker.position, target);
     }
 	
+    public void UpdateTarget(Vector3 Position)
+    {
+        target = Position;
+    }
+
+    public void NoTarget()
+    {
+        target = seeker.position ;
+    }
+
+    public List<Node> ReturnPath()
+    {
+        return grid.path;
+    }
+
+
     void FindPath(Vector3 startPos, Vector3 targetPos)
     {
         Node startNode = grid.NodeFromWorldPoint(startPos);

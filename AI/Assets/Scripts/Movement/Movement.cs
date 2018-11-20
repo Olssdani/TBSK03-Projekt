@@ -10,6 +10,8 @@ public class Movement : MonoBehaviour {
     Vector3 movement;
     public float Rotate;
     public float force;
+    public GameObject Astar;
+
     // Use this for initialization
     void Start ()
     {

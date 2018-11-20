@@ -57,7 +57,6 @@ public class FOW : MonoBehaviour {
         Vector3[] vertices = new Vector3[NrOfRays+1];
         int[] triangles = new int[(NrOfRays-1)*3];
         vertices[0] = transform.position;
-        Debug.Log(vertices[0]);
         int i = 1;
         foreach(Vector3 p in Hits)
         {
