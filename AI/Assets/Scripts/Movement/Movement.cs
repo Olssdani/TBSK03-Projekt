@@ -20,13 +20,12 @@ public class Movement : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate ()
     {
-        //Rotate around axis
-        //Rotate = Input.GetAxis("Horizontal");
         Vector3 m_EulerAngleVelocity = new Vector3(0, Rotate, 0);
         Quaternion deltaRotation = Quaternion.Euler(m_EulerAngleVelocity);
         Rb.MoveRotation(Rb.rotation * deltaRotation);
-        //force = Input.GetAxis("Vertical");
         Rb.MovePosition(Tr.position + Tr.forward * force*speed);
+        force = 0;
+        Rotate = 0;
     }
 
    public void Controller(float F, float R)
