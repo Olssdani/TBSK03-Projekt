@@ -12,16 +12,18 @@ public class Pathfinding : MonoBehaviour {
     {
         grid = GetComponent<GridScript>();
         target = seeker.position;
-        
+        FindPath(seeker.position, target);
+
     }
     void Update()
     {
-        FindPath(seeker.position, target);
+        //FindPath(seeker.position, target);
     }
 	
     public void UpdateTarget(Vector3 Position)
     {
         target = Position;
+        FindPath(seeker.position, target);
     }
 
     public void NoTarget()

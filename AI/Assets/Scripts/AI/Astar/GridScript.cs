@@ -15,7 +15,7 @@ public class GridScript : MonoBehaviour
     float nodeDiameter;
     int gridSizeX, gridSizeY;
 
-    void Start()
+    void Awake()
     {
         nodeDiameter = nodeRadius * 2;
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
@@ -75,11 +75,10 @@ public class GridScript : MonoBehaviour
     }
 
 
-    void OnDrawGizmos()
+    /*void OnDrawGizmos()
     {
         Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
-        Node playerNode = NodeFromWorldPoint(player.position);
-        if(grid!= null)
+        if(grid!= null && Application.isPlaying)
         {
             foreach (Node n in grid)
             {
@@ -94,6 +93,6 @@ public class GridScript : MonoBehaviour
                 Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - 0.01f));
             }
         }
-    }
+    }*/
 
 }

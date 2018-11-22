@@ -33,36 +33,42 @@ public class Movement : MonoBehaviour {
     }
 
 
-    public void GotoPos(Transform Target)
+    public bool GotoPos(Transform Target)
     {
         pathfinding.UpdateTarget(Target.position);
         List<Node> path = pathfinding.ReturnPath();
-
-       // float angle = Vector3.Angle(Tr.forward, Position - Tr.position);
-
-
+        if (path.Count == 0)
+        {
+            return true;
+        }
         transform.LookAt(path[0].worldPosition);
 
         float step = speed * Time.deltaTime;
 
         // Move our position a step closer to the target.
         transform.position = Vector3.MoveTowards(transform.position, Target.position, step);
-
-        // Rotate our transform a step closer to the target's.
-        //Quaternion targetRotation = Quaternion.LookRotation(-Position, Vector3.up);
-        //transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 2.0f);
-        // Vector3 newDir = Vector3.RotateTowards(transform.forward, Position - Tr.position, step, 0.0f);
-        //Debug.DrawRay(transform.position, newDir, Color.red);
-        //Tr.rotation = Quaternion.LookRotation(newDir);
-
-        /*if (angle > 0.01)
-        {
-            Rotate = 2.0f;
-        }*/
-
+        return false;
 
     }
-   public void Controller(float F, float R)
+
+    public bool GotoPos(Vector3 Target)
+    {
+        pathfinding.UpdateTarget(Target);
+        List<Node> path = pathfinding.ReturnPath();
+        if(path.Count == 0)
+        {
+            return true;
+        }
+        transform.LookAt(path[0].worldPosition);
+
+        float step = speed * Time.deltaTime;
+
+        // Move our position a step closer to the target.
+        transform.position = Vector3.MoveTowards(transform.position, Target, step);
+        return false;
+
+    }
+    public void Controller(float F, float R)
     {
         force = F;
         Rotate = R;

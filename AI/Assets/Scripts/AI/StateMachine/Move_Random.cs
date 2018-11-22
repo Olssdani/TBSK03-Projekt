@@ -5,7 +5,8 @@ using UnityEngine;
 public class Move_Random : MonoBehaviour {
 
     //Variable
-    public float radius = 2;
+    public float maxradius = 4;
+    public float minradius = 2;
     private Vector3 CurrentPos;
     private Vector3 MoveToPos;
     public float Speed = 2;
@@ -19,8 +20,16 @@ public class Move_Random : MonoBehaviour {
             SetRandomPosition();
             first = false;
         }
-        CurrentPos = gameObject.GetComponent<Transform>().position;
+      
 
+        if(gameObject.GetComponent<Movement>().GotoPos(MoveToPos))
+        {
+            first = true;
+            return true;
+        }
+        return false;
+        /*
+        CurrentPos = gameObject.GetComponent<Transform>().position;
         Vector3 targetDirection = MoveToPos - CurrentPos;
         float step = Speed * Time.deltaTime;
 
@@ -51,14 +60,33 @@ public class Move_Random : MonoBehaviour {
         else
         {
             return false;
-        }
+        }*/
     }
 
     void SetRandomPosition()
     {
         CurrentPos = gameObject.GetComponent<Transform>().position;
-        float x = Random.Range(CurrentPos.x - radius, CurrentPos.x + radius);
-        float z = Random.Range(CurrentPos.z - radius, CurrentPos.z + radius);
-        MoveToPos = new Vector3(x, CurrentPos.y, z);
+        Vector2 point = Random.insideUnitCircle * maxradius;
+        if(point.x >0)
+        {
+            point.x += minradius;
+        }
+        else
+        {
+            point.x -= minradius;
+        }
+
+        if (point.y > 0)
+        {
+            point.y += minradius;
+        }
+        else
+        {
+            point.y -= minradius;
+        }
+
+       // float x = Random.Range(CurrentPos.x - radius, CurrentPos.x + radius);
+        //float z = Random.Range(CurrentPos.z - radius, CurrentPos.z + radius);
+        MoveToPos = new Vector3(point.x, CurrentPos.y, point.y);
     }
 }

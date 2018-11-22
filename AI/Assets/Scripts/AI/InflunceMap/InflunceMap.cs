@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class InflunceMap : MonoBehaviour {
     public Image Im;
+    //Must be able to divided by 3!!!!!!!!!!!!!!!
     const int size =30;
     private float[,] Unfiltered = new float[size, size];
     private float[,] Filtered = new float[size, size];
@@ -12,11 +13,14 @@ public class InflunceMap : MonoBehaviour {
     public float decreasetime;
     private float[,] temp = new float[size, size];
     public int NumberOfLowPass;
+    public Collider col;
+    float groundSize = 0;
 
     // Use this for initialization
     void Start()
     {
         InitArray();
+        groundSize = col.bounds.size.x ;
         //player = GetComponent<GameObject>();
         player = this.gameObject;
     }
@@ -64,9 +68,11 @@ public class InflunceMap : MonoBehaviour {
             }
         }
         Vector3 pos = player.transform.position;
-        pos.x = (pos.x + 5.0f) / 10.0f;
-        pos.z = (pos.z + 5.0f) / 10.0f;
-        Unfiltered[(int)(pos.x * size), (int)(pos.z * size)] = 1.0f;
+        //pos.x = (pos.x + 5.0f) / 10.0f;
+        //pos.z = (pos.z + 5.0f) / 10.0f;
+        Vector2 NormalPos = World2Normal(pos);
+
+        Unfiltered[(int)(NormalPos.x * size), (int)(NormalPos.y * size)] = 1.0f;
      
     }
 
@@ -130,5 +136,29 @@ public class InflunceMap : MonoBehaviour {
             }
         }
         texture.Apply();
+    }
+
+    public int GetSize()
+    {
+        return size;
+    }
+    public float[,] GetMap()
+    {
+        return Filtered;
+    }
+
+    public Vector2 World2Normal(Vector3 pos)
+    {
+        Vector2 NormalPos;
+        NormalPos.x = (pos.x + groundSize / 2.0f) / groundSize;
+        NormalPos.y = (pos.z + groundSize / 2.0f) / groundSize;
+        return NormalPos;
+    }
+    public Vector3 Indices2World(int x, int y)
+    {
+        Vector2 pos;
+        pos.x = ((float)x / size) * groundSize - groundSize / 2.0f;
+        pos.y = ((float)y / size) * groundSize - groundSize / 2.0f;
+        return new Vector3(pos.x, player.transform.position.y, pos.y);
     }
 }
