@@ -11,12 +11,14 @@ public class Movement : MonoBehaviour {
     public float Rotate;
     public float force;
     public GameObject Astar;
+    Pathfinding pathfinding;
 
     // Use this for initialization
     void Start ()
     {
         Rb = gameObject.GetComponent<Rigidbody>();
         Tr = gameObject.GetComponent<Transform>();
+        pathfinding = Astar.GetComponent<Pathfinding>();
     }
 	
 	// Update is called once per frame
@@ -30,6 +32,20 @@ public class Movement : MonoBehaviour {
         Rotate = 0;
     }
 
+
+    public void GotoPos(Vector3 Position)
+    {
+        pathfinding.UpdateTarget(Position);
+        List<Node> path = pathfinding.ReturnPath();
+
+        float angle = Vector3.Angle(Tr.forward, Position - Tr.position);
+        if (angle > 0.01)
+        {
+            Rotate = 2.0f;
+        }
+        
+
+    }
    public void Controller(float F, float R)
     {
         force = F;
