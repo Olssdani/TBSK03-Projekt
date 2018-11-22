@@ -33,17 +33,33 @@ public class Movement : MonoBehaviour {
     }
 
 
-    public void GotoPos(Vector3 Position)
+    public void GotoPos(Transform Target)
     {
-        pathfinding.UpdateTarget(Position);
+        pathfinding.UpdateTarget(Target.position);
         List<Node> path = pathfinding.ReturnPath();
 
-        float angle = Vector3.Angle(Tr.forward, Position - Tr.position);
-        if (angle > 0.01)
+       // float angle = Vector3.Angle(Tr.forward, Position - Tr.position);
+
+
+        transform.LookAt(path[0].worldPosition);
+
+        float step = speed * Time.deltaTime;
+
+        // Move our position a step closer to the target.
+        transform.position = Vector3.MoveTowards(transform.position, Target.position, step);
+
+        // Rotate our transform a step closer to the target's.
+        //Quaternion targetRotation = Quaternion.LookRotation(-Position, Vector3.up);
+        //transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 2.0f);
+        // Vector3 newDir = Vector3.RotateTowards(transform.forward, Position - Tr.position, step, 0.0f);
+        //Debug.DrawRay(transform.position, newDir, Color.red);
+        //Tr.rotation = Quaternion.LookRotation(newDir);
+
+        /*if (angle > 0.01)
         {
             Rotate = 2.0f;
-        }
-        
+        }*/
+
 
     }
    public void Controller(float F, float R)

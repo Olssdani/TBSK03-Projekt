@@ -39,8 +39,7 @@ public class MainAI : MonoBehaviour {
         }
         else if (Current == (int)State.Hunt)
         {
-            Debug.Log("Hej");
-            mov.GotoPos(new Vector3(0, 0, 0));
+            mov.GotoPos(fow.VisableTargets[0]);
         }
         else if (Current == (int)State.Random)
         {
