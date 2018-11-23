@@ -41,12 +41,29 @@ public class Movement : MonoBehaviour {
         {
             return true;
         }
-        transform.LookAt(path[0].worldPosition);
 
         float step = speed * Time.deltaTime;
+       
+        Vector3 targetDir = Target.position - transform.position;
+        Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, step, 0.0f);
+        transform.rotation = Quaternion.LookRotation(newDir);
+
+        //transform.LookAt(path[0].worldPosition);
+        //transform.rotation = Quaternion.FromToRotation(transform.forward, Target.position - transform.position);
+
+
 
         // Move our position a step closer to the target.
-        transform.position = Vector3.MoveTowards(transform.position, Target.position, step);
+        // transform.position = Vector3.forward * step;
+        if (Vector3.Angle(transform.forward, targetDir) < 30.0f)
+        {
+            transform.position = transform.position+ transform.forward * step;
+            //transform.position = Vector3.MoveTowards(transform.position, Target.position, step);
+        }
+        else
+        {
+            transform.position = transform.position + transform.forward * step;
+        }
         return false;
 
     }
@@ -59,12 +76,28 @@ public class Movement : MonoBehaviour {
         {
             return true;
         }
-        transform.LookAt(path[0].worldPosition);
 
         float step = speed * Time.deltaTime;
 
+        Vector3 targetDir = Target - transform.position;
+        Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, step, 0.0f);
+        transform.rotation = Quaternion.LookRotation(newDir);
+        // transform.LookAt(path[0].worldPosition);
+
+        //float step = speed * Time.deltaTime;
+
         // Move our position a step closer to the target.
-        transform.position = Vector3.MoveTowards(transform.position, Target, step);
+        //
+        if (Vector3.Angle(transform.forward, targetDir)<30.0f)
+        {
+            transform.position = transform.position + transform.forward * step;
+            //transform.position = Vector3.MoveTowards(transform.position, Target, step);
+        }
+        else
+        {
+            transform.position = transform.position + transform.forward * step;
+        }
+       
         return false;
 
     }

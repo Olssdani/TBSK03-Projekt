@@ -21,7 +21,7 @@ public class MainAI : MonoBehaviour {
     {
         if (fow.FindTarget())
         {    
-            //Current = (int)State.Hunt;
+            Current = (int)State.Hunt;
         }
         else
         {
