@@ -75,7 +75,7 @@ public class GridScript : MonoBehaviour
     }
 
 
-    /*void OnDrawGizmos()
+    void OnDrawGizmos()
     {
         Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
         if(grid!= null && Application.isPlaying)
@@ -93,6 +93,6 @@ public class GridScript : MonoBehaviour
                 Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - 0.01f));
             }
         }
-    }*/
+    }
 
 }

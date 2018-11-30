@@ -13,6 +13,7 @@ public class FOW : MonoBehaviour {
     public List<Vector3> rays = new List<Vector3>();
     public List<Vector3> Orginalrays = new List<Vector3>();
     public MeshFilter hide;
+    public float Offset;
     Mesh mesh;
     private List<Vector3> Hits = new List<Vector3>();
     void Start()
@@ -43,11 +44,12 @@ public class FOW : MonoBehaviour {
             {
                 rays.Add(HitPoint.point - transform.position);
                 Hits.Add(HitPoint.point);
+           
             }
             else
             {
                 rays.Add((transform.position + ray * viewRadius) - transform.position);
-                Hits.Add((ray * viewRadius+ transform.position));
+                Hits.Add((ray * (viewRadius)+ transform.position));
             }
         }
     }

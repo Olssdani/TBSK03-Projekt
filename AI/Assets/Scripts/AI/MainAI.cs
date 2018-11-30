@@ -23,36 +23,66 @@ public class MainAI : MonoBehaviour {
         {    
             Current = (int)State.Hunt;
         }
-        else
-        {
-            Current = (int)State.Search;
-        }
-  
+
+        DisplayCurrentState();
         //Check which state the ai is in
-		if(Current == (int)State.Rest)
+        if (Current == (int)State.Rest)
         {
-            Debug.Log((int)State.Rest);
+           
         }else if (Current == (int)State.Search)
         {
-            Debug.Log((int)State.Search);
-            GetComponent<Search>().run();
+           
+            if(GetComponent<Search>().run())
+            {
+                Current = (int)State.Search_Area;
+            }
         }
         else if (Current == (int)State.Search_Area)
         {
-            Debug.Log((int)State.Search_Area);
+            if(GetComponent<Search_Area>().run())
+            {
+                Current = (int)State.Search;
+            }
         }
         else if (Current == (int)State.Hunt)
         {
-            Debug.Log((int)State.Hunt);
+          
             mov.GotoPos(fow.VisableTargets[0]);
         }
         else if (Current == (int)State.Random)
         {
-            Debug.Log((int)State.Random);
+        
             if (GetComponent<Move_Random>().run())
             {
                 Current = (int)State.Search;
             }   
         }  
+    }
+
+    void DisplayCurrentState()
+    {
+        //Check which state the ai is in
+        if (Current == (int)State.Rest)
+        {
+            Debug.Log("Rest");
+        }
+        else if (Current == (int)State.Search)
+        {
+            Debug.Log("Search");
+        }
+        else if (Current == (int)State.Search_Area)
+        {
+            Debug.Log("Search Area");
+        }
+        else if (Current == (int)State.Hunt)
+        {
+            Debug.Log("Hunt");
+
+        }
+        else if (Current == (int)State.Random)
+        {
+            Debug.Log("Random");
+
+        }
     }
 }

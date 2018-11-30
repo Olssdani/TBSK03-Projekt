@@ -36,6 +36,11 @@ public class Pathfinding : MonoBehaviour {
         return grid.path;
     }
 
+    public GridScript ReturnGrid()
+    {
+        return grid;
+    }
+
 
     void FindPath(Vector3 startPos, Vector3 targetPos)
     {
@@ -87,9 +92,7 @@ public class Pathfinding : MonoBehaviour {
                     }
                 }
             }
-
         }
-
     }
 
     void RetracePath(Node startNode, Node endNode)

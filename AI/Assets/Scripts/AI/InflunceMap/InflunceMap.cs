@@ -33,7 +33,6 @@ public class InflunceMap : MonoBehaviour {
 
         AssignTo(Unfiltered, temp);
 
-
         //3: Lowpass filter the image into the Filtred image
         for(int i =0; i< NumberOfLowPass; ++i )
         {
@@ -46,7 +45,7 @@ public class InflunceMap : MonoBehaviour {
                 LowPass(Filtered, temp);
             }
         }
-        
+
         //Update
         ShowUpdate(Filtered);    
     }
@@ -68,12 +67,31 @@ public class InflunceMap : MonoBehaviour {
             }
         }
         Vector3 pos = player.transform.position;
-        //pos.x = (pos.x + 5.0f) / 10.0f;
-        //pos.z = (pos.z + 5.0f) / 10.0f;
         Vector2 NormalPos = World2Normal(pos);
 
         Unfiltered[(int)(NormalPos.x * size), (int)(NormalPos.y * size)] = 1.0f;
-     
+        TargetDetector script = GetComponent<TargetDetector>();
+        for (int y = 0; y < size; y++)
+        {
+            for (int x = 0; x < size; x++)
+            {
+                Vector3 WorldPos = Indices2World(x, y);
+                if(Vector3.Distance(transform.position, WorldPos)<script.viewRadius)
+                {
+                    if(Vector3.Angle(transform.forward,WorldPos-transform.position )<script.viewAngle/2)
+                    {
+                        if(!Physics.Raycast(transform.position, WorldPos - transform.position, Vector3.Distance(transform.position, WorldPos), script.ObstacleMask))
+                        {
+                            Unfiltered[x, y] = Mathf.Min(Unfiltered[x, y]+1.0f - Mathf.Pow(Vector3.Distance(transform.position, WorldPos) / script.viewRadius,2), 1.0f);
+                        }
+                       
+                    }
+                }
+
+
+
+            }
+        }
     }
 
 
@@ -160,5 +178,16 @@ public class InflunceMap : MonoBehaviour {
         pos.x = ((float)x / size) * groundSize - groundSize / 2.0f;
         pos.y = ((float)y / size) * groundSize - groundSize / 2.0f;
         return new Vector3(pos.x, player.transform.position.y, pos.y);
+    }
+
+    public Vector2 World2Indices(Vector3 pos )
+    {
+        Vector2 Ind;
+        Vector2 Nor = World2Normal(pos);
+
+        
+        Ind.x = (int)(Nor.x * size);
+        Ind.y = (int)(Nor.y * size);
+        return Ind;
     }
 }
