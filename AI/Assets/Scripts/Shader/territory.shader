@@ -1,4 +1,4 @@
-﻿Shader "Custom/StencilMask" {
+﻿Shader "Custom/territory" {
 	Properties {
 		_Color ("Color", Color) = (1,1,1,1)
 		_MainTex ("Albedo (RGB)", 2D) = "white" {}
@@ -6,14 +6,15 @@
 		_Metallic ("Metallic", Range(0,1)) = 0.0
 	}
 	SubShader {
-		Tags { "RenderType"="Opaque" "Queue"="Geometry-100"}
+		Tags { "RenderType"="Opaque"  "Queue" = "Geometry-100" }
 		ColorMask 0
 		ZWrite off
 		LOD 200
-
+		//Stencil block
 		Stencil{
-			ref 1
+			Ref 2
 			Pass replace
+			Fail zero
 		}
 
 		CGPROGRAM

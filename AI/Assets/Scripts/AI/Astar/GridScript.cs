@@ -1,29 +1,33 @@
-﻿using System.Collections;
+﻿/*
+This script handle de grid of nodes that is used in the A* algoritm.
+Mostly of this code i from Sebastian Lague with some minor changes made 
+by me to make it specific for this project.
+*/
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GridScript : MonoBehaviour
 {
-    public Transform player;
+    //Variable
     public LayerMask unwalkableMask;
     public Vector2 gridWorldSize;
     public float nodeRadius;
     public List<Node> path;
     Node[,] grid;
- 
-
     float nodeDiameter;
     int gridSizeX, gridSizeY;
 
+    //Set all variables
     void Awake()
     {
         nodeDiameter = nodeRadius * 2;
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
         gridSizeY = Mathf.RoundToInt(gridWorldSize.y / nodeDiameter);
         CreateGrid();
-
     }
 
+    //Create Grid fill it with nodes
     void CreateGrid()
     {
         grid = new Node[gridSizeX, gridSizeY];
@@ -34,12 +38,29 @@ public class GridScript : MonoBehaviour
             for (int y = 0; y < gridSizeY; ++y)
             {
                 Vector3 worldPoint = worldBottomLeft + Vector3.right * (x * nodeDiameter + nodeRadius) + Vector3.forward * (y * nodeDiameter + nodeRadius);
-                bool walkable = !Physics.CheckSphere(worldPoint, nodeRadius, unwalkableMask);
-                grid[x, y] = new Node(walkable, worldPoint, x, y);
+                grid[x, y] = new Node(true, worldPoint, x, y);
             }
         }
     }
+    //Return gridsize in X
+    public int GetSizeX()
+    {
+        return gridSizeX;
 
+    }
+    //Return gridsize in Y
+    public int GetSizeY()
+    {
+        return gridSizeY;
+
+    }
+    //Return a spefic node
+    public Node getNode(int x, int y)
+    {
+        return grid[x,y];
+    }
+
+    //Get Neighbours to a node
     public List<Node> GetNeighbours(Node node)
     {
         List<Node> Neighbour = new List<Node>();
@@ -63,6 +84,7 @@ public class GridScript : MonoBehaviour
         return Neighbour;
     }
 
+    //Get the node which a worldposition lies within.
     public Node NodeFromWorldPoint( Vector3 worldPosition)
     {
         float percentX = (worldPosition.x + gridWorldSize.x / 2) / gridWorldSize.x;
@@ -74,8 +96,8 @@ public class GridScript : MonoBehaviour
         return grid[x, y];
     }
 
-
-    void OnDrawGizmos()
+    //This function draws the A* path in the editor.
+   void OnDrawGizmos()
     {
         Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
         if(grid!= null && Application.isPlaying)
@@ -94,5 +116,4 @@ public class GridScript : MonoBehaviour
             }
         }
     }
-
 }

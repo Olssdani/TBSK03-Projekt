@@ -1,4 +1,7 @@
-﻿using System.Collections;
+﻿/*
+ Editor script taken from Sebastian Lagues that display the Field of view 
+ */
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;

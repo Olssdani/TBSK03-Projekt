@@ -1,4 +1,7 @@
-﻿using System.Collections;
+﻿/*
+    Deactivates the modells that make so we kan see anything in the editor
+ */
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 

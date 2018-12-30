@@ -1,18 +1,20 @@
-﻿using System.Collections;
+﻿/*
+    Script that handles the movement of the agents
+ */
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Movement : MonoBehaviour {
 
+    //Variables
     public float speed;
     private Rigidbody Rb;
     private Transform Tr;
-    Vector3 movement;
-    public float Rotate;
-    public float force;
     public GameObject Astar;
     Pathfinding pathfinding;
     Node Current;
+
 
     // Use this for initialization
     void Start ()
@@ -22,42 +24,41 @@ public class Movement : MonoBehaviour {
         pathfinding = Astar.GetComponent<Pathfinding>();
         Current = pathfinding.ReturnGrid().NodeFromWorldPoint(transform.position);
     }
-	
-	// Update is called once per frame
-	void FixedUpdate ()
-    {
-        Vector3 m_EulerAngleVelocity = new Vector3(0, Rotate, 0);
-        Quaternion deltaRotation = Quaternion.Euler(m_EulerAngleVelocity);
-        Rb.MoveRotation(Rb.rotation * deltaRotation);
-        Rb.MovePosition(Tr.position + Tr.forward * force*speed);
-        force = 0;
-        Rotate = 0;
-    }
 
 
+    //Go closer to the target
     public bool GotoPos(Transform Target)
     {
+        //Update the pathfing algoritm
         pathfinding.UpdateTarget(Target.position);
         List<Node> path = pathfinding.ReturnPath();
         if (path.Count == 0)
         {
             return true;
         }
+        //If the agent is att the target
+        if (CompleteNode())
+        {
+            Current = path[0];
+        }
 
         float step = 3.0f * Time.deltaTime;
-       
-        Vector3 targetDir = Target.position - transform.position;
+        //Find the target direction vector
+        Vector3 targetDir = Current.worldPosition - transform.position;
+        //Find a new vector that is rotated depending on the step
         Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, step, 0.0f);
+        //Rotate the body
         transform.rotation = Quaternion.LookRotation(newDir);
+
         step = speed * Time.deltaTime;
-        // Move our position a step closer to the target.
-        if (Vector3.Angle(transform.forward, targetDir) < 30.0f)
+        //If the angle is lower than 40 deegres move toward target
+        if (Vector3.Angle(transform.forward, targetDir) < 40.0f)
         {
-            transform.position = transform.position+ transform.forward * step;
+            transform.position = transform.position + transform.forward * step;
         }
         return false;
     }
-
+    //Overloaded function
     public bool GotoPos(Vector3 Target)
     {
         pathfinding.UpdateTarget(Target);
@@ -78,7 +79,7 @@ public class Movement : MonoBehaviour {
         transform.rotation = Quaternion.LookRotation(newDir);
 
         step = speed * Time.deltaTime;
-        if (Vector3.Angle(transform.forward, targetDir)<30.0f)
+        if (Vector3.Angle(transform.forward, targetDir)<40.0f)
         {
             transform.position = transform.position + transform.forward * step;
         }
@@ -86,6 +87,7 @@ public class Movement : MonoBehaviour {
 
     }
 
+    //Rotates the agent without moving
     public bool LookAt(float Angle)
     {
         float step = 3.0f * Time.deltaTime;
@@ -101,7 +103,7 @@ public class Movement : MonoBehaviour {
 
         return false;
     }
-
+    //Overloaded 
     public bool LookAt(Vector3 pos)
     {
         float step = 3.0f * Time.deltaTime;
@@ -118,20 +120,16 @@ public class Movement : MonoBehaviour {
         return false;
     }
 
-    public void Controller(float F, float R)
-    {
-        force = F;
-        Rotate = R;
-    }
-
+    //Get rotation
     public Quaternion GetRot()
     {
         return Rb.rotation;
     }
 
+    //If the agent has completed a node
     bool CompleteNode()
     {
-        if(Vector3.Distance(Current.worldPosition, transform.position) <0.1)
+        if(Vector3.Distance(Current.worldPosition, transform.position) <0.2)
         {
             return true;
         }

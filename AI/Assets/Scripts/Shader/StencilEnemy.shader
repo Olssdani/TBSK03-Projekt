@@ -1,4 +1,4 @@
-﻿Shader "Custom/StencilObject" {
+﻿Shader "Custom/StencilEnemy" {
 	Properties {
 		_Color ("Color", Color) = (1,1,1,1)
 		_MainTex ("Albedo (RGB)", 2D) = "white" {}
@@ -8,10 +8,12 @@
 	SubShader {
 		Tags { "RenderType"="Opaque" }
 		LOD 200
+		//Shader to not render the enemy in shadow
 		Stencil{
 			Ref 1
-			Comp equal
+			Comp Equal
 		}
+
 		CGPROGRAM
 		// Physically based Standard lighting model, and enable shadows on all light types
 		#pragma surface surf Standard fullforwardshadows

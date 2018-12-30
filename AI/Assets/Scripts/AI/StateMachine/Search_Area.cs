@@ -1,14 +1,19 @@
-﻿using System.Collections;
+﻿/*
+    This is the state where the agent search in a smaller area
+
+*/
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Search_Area : MonoBehaviour
 {
+    //Variables
     bool Find_New_Position = true;
     Vector3 MoveToPos = Vector3.zero;
     InflunceMap map;
     Movement mov;
-    Vector2 Search_Pos = Vector2.zero;
     bool RotationDone = false;
     int Case_LookAround;
     int Case;
@@ -16,7 +21,7 @@ public class Search_Area : MonoBehaviour
     Vector3 right;
     Vector3 forward;
 
-
+    //Initialize vairables
     void Start()
     {
         map = GetComponent<InflunceMap>();
@@ -25,22 +30,25 @@ public class Search_Area : MonoBehaviour
         Case = 0;
     }
 
+    // Run the state
     public bool run()
     {
         Vector2 IndPos = map.World2Indices(transform.position);
+        //Switch between going to a new position and looking around
         switch (Case)
         {
             case 0:
+                //Starts looking around
                 if (LookToDirection(IndPos))
                 {
                     Case++;
                 }
                 break;
             case 1:
+                //Goes to a new position
                 if (Find_New_Position)
                 {
                     MoveToPos = GetPosition(IndPos);
-                    Debug.Log(MoveToPos);
                     Find_New_Position = false;
                 }
                 if (mov.GotoPos(MoveToPos))
@@ -49,6 +57,7 @@ public class Search_Area : MonoBehaviour
                 }
                 break;
             case 2:
+                //Looks around at the new position
                 if (LookToDirection(IndPos))
                 {
                     Case++;
@@ -62,14 +71,10 @@ public class Search_Area : MonoBehaviour
 
         return false;
     }
-
-
-
-
-
-
+    //Function to look left and right
     bool LookToDirection(Vector2 Indic)
     {
+        //Get the left and right vector.
         if (!RotationDone)
         {
             right = transform.position + Vector3.Cross(transform.up, transform.forward);
@@ -113,7 +118,7 @@ public class Search_Area : MonoBehaviour
     }
 
 
-
+    //Calculate a position in a close proximity to the agent
     Vector3 GetPosition(Vector2 ind)
     {
         float minX = Mathf.Max(1, ind.x - 4.0f);
@@ -127,37 +132,3 @@ public class Search_Area : MonoBehaviour
         return new Vector3(temp.x, transform.position.y, temp.y) ;
     }
 }
-
-
-/* Vector2 FindMinMapPos(Vector2 ind)
- {
-     Debug.Log(ind);
-     int minX = (int)Mathf.Max(1, ind.x - 5.0f);
-     int maxX = (int)Mathf.Min(map.GetSize()-1, ind.x + 5.0f);
-     int minY = (int)Mathf.Max(1, ind.y - 5.0f);
-     int maxY = (int)Mathf.Min(map.GetSize()-1, ind.y + 5.0f);
-
-
-     float min = 2.0f;
-     Vector2 pos = Vector2.zero;
-     float[,] CurrentMap = map.GetMap();
-     Debug.Log("Min x " + minX + " Max X " + maxX + " Min y " + minY + " Max Y " + maxY);
-     for (int x = minX; x <= maxX; ++x)
-     {
-         for (int y = minY; y <= maxY; ++y)
-         {
-
-             if (CurrentMap[x, y] < min)
-             {
-                 min = CurrentMap[x, y];
-                 pos.x = x;
-                 pos.y = y;
-             }
-         }
-     }
-
-     Debug.Log(pos);
-     //int x = (int)Random.Range(Mathf.Max(0, ind.x - 5), Mathf.Max(map.GetSize(), ind.x + 5));
-     //int y = (int)Random.Range(Mathf.Max(0, ind.y - 5), Mathf.Max(map.GetSize(), ind.y + 5));
-     return pos;
- }*/

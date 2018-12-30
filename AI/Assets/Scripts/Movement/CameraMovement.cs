@@ -1,4 +1,7 @@
-﻿using System.Collections;
+﻿/*
+    This controlls the camera so its follows the player.
+*/
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,6 +18,7 @@ public class CameraMovement : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        //Move the camera to the player position with an ofset i y.
         transform.position = new Vector3(Ptransform.position.x, Ptransform.position.y + offset, Ptransform.position.z);
     }
 }
